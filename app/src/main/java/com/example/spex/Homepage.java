@@ -49,7 +49,7 @@ public class Homepage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
 
-        //buttons
+        /*buttons
         alarm=findViewById(R.id.alarm);
 
         connectthread cn = new connectthread();
@@ -72,7 +72,7 @@ public class Homepage extends AppCompatActivity {
         });
 
 
-
+*/
 
     }
 }

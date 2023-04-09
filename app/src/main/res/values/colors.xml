@@ -8,5 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="purple">#0424EF</color>
+    <color name="colorgradientstart">#00FF2A</color>
+    <color name="colorgradientcenter">#054F11</color>
+    <color name="colorgradientend">#000000</color>
+    <color name="red">#FF0000</color>
 </resources>

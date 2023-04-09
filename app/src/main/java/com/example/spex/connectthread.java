@@ -11,10 +11,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.AnimationDrawable;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -22,6 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class connectthread extends AppCompatActivity {
     String TAG = "Test";
@@ -38,6 +43,13 @@ public class connectthread extends AppCompatActivity {
 
     String rxdata="";
 
+    private AnimationDrawable animDrawable;
+
+    private TextView welcome;
+    Calendar calendar = Calendar.getInstance();
+    public Boolean connected=false,alarmon=false;
+
+
 
 
     @SuppressLint("MissingInflatedId")
@@ -45,11 +57,15 @@ public class connectthread extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connectthread);
+
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         ConstraintLayout constraintLayout = findViewById(R.id.homeLayout);
-        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(2500);
-        animationDrawable.setEnterFadeDuration(5000);
-        animationDrawable.start();
+        animDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animDrawable.setEnterFadeDuration(10);
+        animDrawable.setExitFadeDuration(5000);
+        animDrawable.start();
 
 
         intentFilter = new IntentFilter();
@@ -68,6 +84,22 @@ public class connectthread extends AppCompatActivity {
         //connect.setEnabled(false);
 
         rxThread= new connectthread.RxThread();
+
+        //Welcoming code
+
+        welcome = (TextView) findViewById(R.id.welcome);
+
+        int timeOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+
+        if(timeOfDay >= 0 && timeOfDay < 12){
+            welcome.setText("Good Morning,");
+        }else if(timeOfDay >= 12 && timeOfDay < 16){
+            welcome.setText("Good Afternoon,");
+        }else if(timeOfDay >= 16 && timeOfDay < 21){
+            welcome.setText("Good Evening,");
+        }else if(timeOfDay >= 21 && timeOfDay < 24){
+            welcome.setText("Good Night,");
+        }
 
 
 
@@ -92,17 +124,30 @@ public class connectthread extends AppCompatActivity {
                             break;
                         }
                     }
-                    System.out.println(0);
-                    bluetoothSocket =bluetoothDevice.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-                    System.out.println(9);
-                    bluetoothSocket.connect();
+                   try {
+                       bluetoothSocket =bluetoothDevice.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
 
-                    inputStream=bluetoothSocket.getInputStream();
-                    outputStream=bluetoothSocket.getOutputStream();
-                    rxThread.start();
-                    Toast.makeText(getApplicationContext(),"Connected",Toast.LENGTH_SHORT).show();
-                    connect.setText("Connected...");
-                    connect.setEnabled(false);
+                       bluetoothSocket.connect();
+                   }catch (Exception e){
+                       if (!bluetoothAdapter.isEnabled()) {
+                           Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                           int REQUEST_ENABLE_BT = 0;
+                           startActivityForResult(enableBtIntent,  REQUEST_ENABLE_BT);
+                       }
+                       Toast.makeText(getApplicationContext(),"Can't Connect Make sure the device is nearby/on",Toast.LENGTH_SHORT).show();
+                       return;
+                   }
+
+                        inputStream=bluetoothSocket.getInputStream();
+                        outputStream=bluetoothSocket.getOutputStream();
+                        rxThread.start();
+                        Toast.makeText(getApplicationContext(),"Connected",Toast.LENGTH_SHORT).show();
+                        connected=true;
+                        connect.setText("Connected...");
+                        connect.setEnabled(false);
+
+
+
 
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -116,12 +161,31 @@ public class connectthread extends AppCompatActivity {
 
 
         on.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
-                try {
-                    outputStream.write(65);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if(!alarmon) {
+                    if (connected) {
+                        try {
+                            outputStream.write(65);
+                            on.setText("Stop");
+                           // on.setBackgroundTintList(ColorStateList.valueOf(R.color.red));
+                            alarmon=true;
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "First Connect with the Bluetooth Device", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    try {
+                        outputStream.write(64);
+                        on.setText("BuZZ");
+                        alarmon=false;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 }
             }
         });
@@ -133,13 +197,7 @@ public class connectthread extends AppCompatActivity {
 
     }
 
-    public void send(int i){
-        try {
-            outputStream.write(i);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
 
     class RxThread extends Thread{

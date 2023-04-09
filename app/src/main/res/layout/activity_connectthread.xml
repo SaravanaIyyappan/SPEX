@@ -20,7 +20,7 @@
         android:layout_marginEnd="112dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/round_button"
-        android:backgroundTint="@color/purple"
+        android:backgroundTint="#0424EE"
         android:text="Alarm"
         android:textColor="@color/white"
         android:textSize="20dp"
@@ -33,7 +33,7 @@
         android:layout_width="160dp"
         android:layout_height="49dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="116dp"
         android:layout_marginEnd="291dp"
         android:backgroundTint="#0424EF"
         android:text="Connect"
@@ -42,6 +42,26 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="294dp"
+        android:layout_marginBottom="14dp"
+        android:fontFamily="@font/craftynotes"
+        android:text="Welcome"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/connect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.61" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
