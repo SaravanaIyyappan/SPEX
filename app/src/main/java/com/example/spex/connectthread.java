@@ -179,7 +179,7 @@ public class connectthread extends AppCompatActivity {
                     }
                 }else{
                     try {
-                        outputStream.write(64);
+                        outputStream.write(66);
                         on.setText("BuZZ");
                         alarmon=false;
                     } catch (IOException e) {
