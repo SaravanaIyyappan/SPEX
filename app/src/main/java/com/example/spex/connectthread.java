@@ -6,18 +6,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
+
 import android.graphics.drawable.AnimationDrawable;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +28,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class connectthread extends AppCompatActivity {
     String TAG = "Test";
@@ -45,10 +49,13 @@ public class connectthread extends AppCompatActivity {
 
     private AnimationDrawable animDrawable;
 
-    private TextView welcome;
+    private TextView welcome,bt;
     Calendar calendar = Calendar.getInstance();
     public Boolean connected=false,alarmon=false;
 
+    GifImageView gif;
+
+    int count=0;
 
 
 
@@ -66,6 +73,8 @@ public class connectthread extends AppCompatActivity {
         animDrawable.setEnterFadeDuration(10);
         animDrawable.setExitFadeDuration(5000);
         animDrawable.start();
+        gif = (GifImageView) findViewById(R.id.alaramgif);
+        bt = findViewById(R.id.signal);
 
 
         intentFilter = new IntentFilter();
@@ -100,6 +109,8 @@ public class connectthread extends AppCompatActivity {
         }else if(timeOfDay >= 21 && timeOfDay < 24){
             welcome.setText("Good Night,");
         }
+
+
 
 
 
@@ -143,6 +154,7 @@ public class connectthread extends AppCompatActivity {
                         rxThread.start();
                         Toast.makeText(getApplicationContext(),"Connected",Toast.LENGTH_SHORT).show();
                         connected=true;
+
                         connect.setText("Connected...");
                         connect.setEnabled(false);
 
@@ -169,7 +181,7 @@ public class connectthread extends AppCompatActivity {
                         try {
                             outputStream.write(65);
                             on.setText("Stop");
-                           // on.setBackgroundTintList(ColorStateList.valueOf(R.color.red));
+                           gif.setVisibility(View.VISIBLE);
                             alarmon=true;
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -181,6 +193,7 @@ public class connectthread extends AppCompatActivity {
                     try {
                         outputStream.write(66);
                         on.setText("BuZZ");
+                        gif.setVisibility(View.INVISIBLE);
                         alarmon=false;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -232,7 +245,6 @@ public class connectthread extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            System.out.println(2);
                             connect.setEnabled(true);
                         }
                     });
@@ -240,6 +252,7 @@ public class connectthread extends AppCompatActivity {
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
                     rxThread.isrunning=false;
                     break;
+
             }
         }
     };

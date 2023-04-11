@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_list"
-    tools:context=".Homepage">
+    tools:context=".connectthread">
 
 
     <Button
@@ -21,7 +21,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/round_button"
         android:backgroundTint="#0424EE"
-        android:text="Alarm"
+        android:text="Buzz"
         android:textColor="@color/white"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,5 +63,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.61" />
 
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/alaramgif"
+        android:layout_width="359dp"
+        android:layout_height="339dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="98dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="131dp"
+        android:src="@drawable/giphy2"
+        app:layout_constraintBottom_toTopOf="@+id/alarm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/connect"
+        android:visibility="invisible"
+        app:layout_constraintVertical_bias="0.325" />
+
+    <TextView
+        android:id="@+id/signal"
+        android:layout_width="88dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="118dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="59dp"
+        android:text="bt"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/alaramgif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toEndOf="@+id/connect"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
