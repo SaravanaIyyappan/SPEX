@@ -18,9 +18,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="111dp"
         android:layout_marginEnd="112dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="76dp"
         android:background="@drawable/round_button"
-        android:backgroundTint="#0424EE"
+        android:backgroundTint="#9603FF"
         android:text="Buzz"
         android:textColor="@color/white"
         android:textSize="20dp"
@@ -32,10 +32,10 @@
         android:id="@+id/connect"
         android:layout_width="160dp"
         android:layout_height="49dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="291dp"
-        android:backgroundTint="#0424EF"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#9603FF"
         android:text="Connect"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,20 +48,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="294dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="280dp"
         android:layout_marginBottom="14dp"
         android:fontFamily="@font/craftynotes"
         android:text="Welcome"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/connect"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.61" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/alaramgif"
@@ -79,20 +79,43 @@
         android:visibility="invisible"
         app:layout_constraintVertical_bias="0.325" />
 
-    <TextView
-        android:id="@+id/signal"
-        android:layout_width="88dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="118dp"
-        android:layout_marginEnd="47dp"
-        android:layout_marginBottom="59dp"
-        android:text="bt"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/alaramgif"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
-        app:layout_constraintStart_toEndOf="@+id/connect"
+        android:id="@+id/bottomnav"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/nametext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="274dp"
+        android:fontFamily="@font/archivo_black"
+        android:text="Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome" />
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

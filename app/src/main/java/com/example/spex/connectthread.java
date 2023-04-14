@@ -2,6 +2,7 @@ package com.example.spex;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -13,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -23,12 +25,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.spex.databinding.ActivityConnectthreadBinding;
+import com.example.spex.databinding.ActivityMainBinding;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
-
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -36,6 +42,8 @@ public class connectthread extends AppCompatActivity {
     String TAG = "Test";
 
     public Button connect, getdevice,on,off;
+
+    int count=0;
 
     BluetoothAdapter bluetoothAdapter;
     BluetoothDevice bluetoothDevice;
@@ -49,17 +57,22 @@ public class connectthread extends AppCompatActivity {
 
     private AnimationDrawable animDrawable;
 
-    private TextView welcome,bt;
+    private TextView welcome,name;
     Calendar calendar = Calendar.getInstance();
     public Boolean connected=false,alarmon=false;
 
+    Fragment fragment ;
+
+
+
+    ActivityConnectthreadBinding binding;
+
     GifImageView gif;
 
-    int count=0;
 
 
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +87,50 @@ public class connectthread extends AppCompatActivity {
         animDrawable.setExitFadeDuration(5000);
         animDrawable.start();
         gif = (GifImageView) findViewById(R.id.alaramgif);
-        bt = findViewById(R.id.signal);
 
+
+
+
+
+        binding = ActivityConnectthreadBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
+        Set<String> name2 = sharedPreferences.getStringSet("name", new LinkedHashSet<>());
+
+        String[] array = name2.toArray(new String[0]);
+        System.out.println(array[0]);
+        String person = array[0];
+
+        Fragment fragment = new MapFragment();
+
+
+        binding.bottomnav.setOnNavigationItemSelectedListener(item -> {
+
+            switch (item.getItemId()) {
+                case R.id.home:
+                    Intent intent = new Intent(connectthread.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+
+                case R.id.map:
+
+                    if (count>0){
+                        Toast.makeText(getApplicationContext(),"Failed to Fetch GPS DATA , No Satelittes",Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                    count=1;
+                    break;
+
+
+            }
+            return true;
+
+        });
 
         intentFilter = new IntentFilter();
 
@@ -102,12 +157,20 @@ public class connectthread extends AppCompatActivity {
 
         if(timeOfDay >= 0 && timeOfDay < 12){
             welcome.setText("Good Morning,");
+            name = (TextView) findViewById(R.id.nametext);
+            name.setText(person);
         }else if(timeOfDay >= 12 && timeOfDay < 16){
             welcome.setText("Good Afternoon,");
+            name = (TextView) findViewById(R.id.nametext);
+            name.setText(person);
         }else if(timeOfDay >= 16 && timeOfDay < 21){
             welcome.setText("Good Evening,");
+            name = (TextView) findViewById(R.id.nametext);
+            name.setText(person);
         }else if(timeOfDay >= 21 && timeOfDay < 24){
             welcome.setText("Good Night,");
+            name = (TextView) findViewById(R.id.nametext);
+            name.setText(person);
         }
 
 
